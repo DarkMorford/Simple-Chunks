@@ -1,14 +1,15 @@
 [{
-  "modid": "simplechunks",
-  "name": "Simple Chunks",
-  "description": "A simple chunkloader mod.",
-  "version": "${version}",
-  "mcversion": "${mcversion}",
-  "url": "https://github.com/DarkMorford/Simple-Chunks",
-  "updateUrl": "",
-  "authorList": ["DarkMorford"],
-  "credits": "",
-  "logoFile": "",
-  "screenshots": [],
-  "dependencies": []
+	"modid": "simplechunks",
+	"name": "Simple Chunks",
+	"description": "A simple chunkloader mod.",
+	"version": "${version}",
+	"mcversion": "${mcversion}",
+	"url": "https://github.com/DarkMorford/Simple-Chunks",
+	"updateUrl": "",
+	"authorList": ["DarkMorford"],
+	"credits": "",
+	"logoFile": "",
+	"screenshots": [],
+	"dependencies": [],
+	"useDependencyInformation": true
 }]

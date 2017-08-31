@@ -1,0 +1,14 @@
+# Package root
+root = true
+
+# Global defaults
+[*]
+charset = utf-8
+indent_style = tab
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# Specific metadata files
+[{mcmeta.info,pack.mcmeta}]
+indent_size = 4
+indent_style = space

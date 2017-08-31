@@ -1,6 +1,8 @@
 package net.darkmorford.simplechunks.proxy;
 
+import net.darkmorford.simplechunks.SimpleChunks;
 import net.darkmorford.simplechunks.block.BlockChunkLoader;
+import net.darkmorford.simplechunks.gui.GuiProxy;
 import net.darkmorford.simplechunks.init.ModBlocks;
 import net.darkmorford.simplechunks.tileentity.TileEntityChunkLoader;
 import net.minecraft.block.Block;
@@ -12,6 +14,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 @Mod.EventBusSubscriber
@@ -23,6 +26,7 @@ public class CommonProxy
 
 	public void init(FMLInitializationEvent event)
 	{
+		NetworkRegistry.INSTANCE.registerGuiHandler(SimpleChunks.instance, new GuiProxy());
 	}
 
 	public void postInit(FMLPostInitializationEvent event)

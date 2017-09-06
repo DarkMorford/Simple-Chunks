@@ -105,7 +105,8 @@ public class ContainerChunkLoader extends Container
 	}
 
 	@Override
-	public boolean canInteractWith(EntityPlayer playerIn) {
-		return false;
+	public boolean canInteractWith(EntityPlayer playerIn)
+	{
+		return te.canInteractWith(playerIn);
 	}
 }

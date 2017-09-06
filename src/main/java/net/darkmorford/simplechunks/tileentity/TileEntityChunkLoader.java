@@ -1,5 +1,6 @@
 package net.darkmorford.simplechunks.tileentity;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -58,5 +59,10 @@ public class TileEntityChunkLoader extends TileEntity
 		}
 
 		return super.getCapability(capability, facing);
+	}
+
+	public boolean canInteractWith(EntityPlayer playerIn)
+	{
+		return !isInvalid() && playerIn.getDistanceSq(pos.add(0.5, 0.5, 0.5)) <= 64;
 	}
 }

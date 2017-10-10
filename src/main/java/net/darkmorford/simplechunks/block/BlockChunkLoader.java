@@ -40,6 +40,11 @@ public class BlockChunkLoader extends Block implements ITileEntityProvider, TOPI
 	@Override
 	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
 	{
+		if (worldIn.isRemote)
+		{
+			return;
+		}
+
 		if (!(placer instanceof EntityPlayer))
 		{
 			return;

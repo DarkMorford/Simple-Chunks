@@ -6,5 +6,5 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 public class ModBlocks
 {
 	@GameRegistry.ObjectHolder("simplechunks:chunkloader")
-	public static final BlockChunkLoader chunkLoader = null;
+	public static BlockChunkLoader chunkLoader;
 }

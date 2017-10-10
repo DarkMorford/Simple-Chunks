@@ -1,12 +1,17 @@
 package net.darkmorford.simplechunks;
 
 import net.darkmorford.simplechunks.proxy.CommonProxy;
+import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Logger;
+
+import java.util.List;
 
 @Mod(
 		modid = SimpleChunks.MODID,
@@ -15,7 +20,7 @@ import org.apache.logging.log4j.Logger;
 		acceptedMinecraftVersions = "[1.12,1.13)",
 		useMetadata = true
 )
-public class SimpleChunks
+public class SimpleChunks implements ForgeChunkManager.LoadingCallback
 {
 	public static final String MODID = "simplechunks";
 	public static final String MODNAME = "Simple Chunks";
@@ -47,5 +52,23 @@ public class SimpleChunks
 	public void postInit(FMLPostInitializationEvent event)
 	{
 		proxy.postInit(event);
+	}
+
+	@Override
+	public void ticketsLoaded(List<ForgeChunkManager.Ticket> tickets, World world)
+	{
+		for (ForgeChunkManager.Ticket ticket : tickets)
+		{
+			if (ticket.isPlayerTicket())
+			{
+				logger.log(Level.INFO, "Releasing ticket for player " + ticket.getPlayerName());
+			}
+			else
+			{
+				logger.log(Level.INFO, "Releasing ticket for mod " + ticket.getModId());
+			}
+
+			ForgeChunkManager.releaseTicket(ticket);
+		}
 	}
 }

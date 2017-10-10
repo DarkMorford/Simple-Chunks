@@ -1,5 +1,6 @@
 package net.darkmorford.simplechunks.proxy;
 
+import net.darkmorford.simplechunks.SimpleChunks;
 import net.darkmorford.simplechunks.block.BlockChunkLoader;
 import net.darkmorford.simplechunks.init.ModBlocks;
 import net.darkmorford.simplechunks.tileentity.TileEntityChunkLoader;
@@ -33,8 +34,7 @@ public class CommonProxy
 	public static void registerBlocks(RegistryEvent.Register<Block> event)
 	{
 		event.getRegistry().register(new BlockChunkLoader());
-
-		GameRegistry.registerTileEntity(TileEntityChunkLoader.class, "simplechunks_chunkloader");
+		GameRegistry.registerTileEntity(TileEntityChunkLoader.class, SimpleChunks.MODID + ":chunkloader");
 	}
 
 	@SubscribeEvent

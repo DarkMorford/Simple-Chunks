@@ -2,6 +2,7 @@ package net.darkmorford.simplechunks.proxy;
 
 import net.darkmorford.simplechunks.SimpleChunks;
 import net.darkmorford.simplechunks.block.BlockChunkLoader;
+import net.darkmorford.simplechunks.compat.TOPCompat;
 import net.darkmorford.simplechunks.config.GeneralConfig;
 import net.darkmorford.simplechunks.init.ModBlocks;
 import net.darkmorford.simplechunks.tileentity.TileEntityChunkLoader;
@@ -10,6 +11,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -45,6 +47,12 @@ public class CommonProxy
 			{
 				config.save();
 			}
+		}
+
+		// Integrate with other mods
+		if (Loader.isModLoaded("theoneprobe"))
+		{
+			TOPCompat.register();
 		}
 	}
 

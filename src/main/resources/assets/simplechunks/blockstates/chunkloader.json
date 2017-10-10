@@ -3,7 +3,7 @@
 	"defaults": {
 		"model": "simplechunks:chunkloader"
 	},
-	variants: {
+	"variants": {
 		"normal": [{}],
 		"inventory": [{}]
 	}

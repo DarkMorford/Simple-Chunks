@@ -16,6 +16,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTUtil;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
@@ -24,7 +25,6 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.apache.logging.log4j.Level;
 
 public class BlockChunkLoader extends Block implements ITileEntityProvider, TOPInfoProvider
 {
@@ -58,6 +58,7 @@ public class BlockChunkLoader extends Block implements ITileEntityProvider, TOPI
 
 		if (!(placer instanceof EntityPlayer))
 		{
+			SimpleChunks.logger.warn("Chunk loader placed by " + placer);
 			return;
 		}
 
@@ -66,21 +67,37 @@ public class BlockChunkLoader extends Block implements ITileEntityProvider, TOPI
 		ForgeChunkManager.Ticket tkt = ForgeChunkManager.requestPlayerTicket(SimpleChunks.instance, player.getName(), worldIn, ForgeChunkManager.Type.NORMAL);
 		if (tkt != null)
 		{
-			SimpleChunks.logger.log(Level.INFO, "Received ticket from Forge Chunk Manager");
-			tkt.getModData().setLong("position", pos.toLong());
-			TileEntityChunkLoader loader = (TileEntityChunkLoader)worldIn.getTileEntity(pos);
-			loader.setChunkTicket(tkt);
+			SimpleChunks.logger.info("Received ticket from Forge Chunk Manager");
+			tkt.getModData().setTag("position", NBTUtil.createPosTag(pos));
+
+			TileEntity te = worldIn.getTileEntity(pos);
+			if (te instanceof TileEntityChunkLoader)
+			{
+				TileEntityChunkLoader loader = (TileEntityChunkLoader) te;
+				loader.setChunkTicket(tkt);
+				loader.forceChunks();
+			}
+		}
+		else
+		{
+			SimpleChunks.logger.error("Unable to get ticket from Forge Chunk Manager!");
 		}
 	}
 
 	@Override
 	public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
 	{
-		SimpleChunks.logger.log(Level.INFO, "Releasing chunkloading ticket");
-		TileEntityChunkLoader loader = (TileEntityChunkLoader)worldIn.getTileEntity(pos);
+		SimpleChunks.logger.info("Releasing chunkloading ticket");
 
-		ForgeChunkManager.Ticket tkt = loader.getChunkTicket();
-		ForgeChunkManager.releaseTicket(tkt);
+		TileEntity te = worldIn.getTileEntity(pos);
+		if (te instanceof TileEntityChunkLoader)
+		{
+			TileEntityChunkLoader loader = (TileEntityChunkLoader) te;
+
+			loader.clearTicketChunks();
+			ForgeChunkManager.Ticket tkt = loader.getChunkTicket();
+			ForgeChunkManager.releaseTicket(tkt);
+		}
 
 		super.breakBlock(worldIn, pos, state);
 	}
@@ -91,7 +108,7 @@ public class BlockChunkLoader extends Block implements ITileEntityProvider, TOPI
 		TileEntity te = world.getTileEntity(hitData.getPos());
 		if (te instanceof TileEntityChunkLoader)
 		{
-			TileEntityChunkLoader loader = (TileEntityChunkLoader)te;
+			TileEntityChunkLoader loader = (TileEntityChunkLoader) te;
 			ForgeChunkManager.Ticket tkt = loader.getChunkTicket();
 
 			if (tkt != null)

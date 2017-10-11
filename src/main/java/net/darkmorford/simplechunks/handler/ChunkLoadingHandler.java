@@ -1,5 +1,6 @@
 package net.darkmorford.simplechunks.handler;
 
+import com.google.common.collect.ListMultimap;
 import net.darkmorford.simplechunks.SimpleChunks;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeChunkManager;
@@ -7,7 +8,7 @@ import org.apache.logging.log4j.Level;
 
 import java.util.List;
 
-public class ChunkLoadingHandler implements ForgeChunkManager.LoadingCallback
+public class ChunkLoadingHandler implements ForgeChunkManager.PlayerOrderedLoadingCallback
 {
 	@Override
 	public void ticketsLoaded(List<ForgeChunkManager.Ticket> tickets, World world)
@@ -27,5 +28,12 @@ public class ChunkLoadingHandler implements ForgeChunkManager.LoadingCallback
 
 			ForgeChunkManager.releaseTicket(ticket);
 		}
+	}
+
+	@Override
+	public ListMultimap<String, ForgeChunkManager.Ticket> playerTicketsLoaded(ListMultimap<String, ForgeChunkManager.Ticket> tickets, World world)
+	{
+		// We don't care what order the tickets are in, just send back the same list
+		return tickets;
 	}
 }

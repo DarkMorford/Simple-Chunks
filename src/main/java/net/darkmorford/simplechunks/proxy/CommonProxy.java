@@ -4,11 +4,13 @@ import net.darkmorford.simplechunks.SimpleChunks;
 import net.darkmorford.simplechunks.block.BlockChunkLoader;
 import net.darkmorford.simplechunks.compat.TOPCompat;
 import net.darkmorford.simplechunks.config.GeneralConfig;
+import net.darkmorford.simplechunks.handler.ChunkLoadingHandler;
 import net.darkmorford.simplechunks.init.ModBlocks;
 import net.darkmorford.simplechunks.tileentity.TileEntityChunkLoader;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Loader;
@@ -54,6 +56,9 @@ public class CommonProxy
 		{
 			TOPCompat.register();
 		}
+
+		// Register chunkloading callback
+		ForgeChunkManager.setForcedChunkLoadingCallback(SimpleChunks.instance, new ChunkLoadingHandler());
 	}
 
 	public void init(FMLInitializationEvent event)

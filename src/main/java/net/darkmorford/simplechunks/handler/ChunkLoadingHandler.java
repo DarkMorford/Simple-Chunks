@@ -27,6 +27,10 @@ public class ChunkLoadingHandler implements ForgeChunkManager.PlayerOrderedLoadi
 				loader.setChunkTicket(ticket);
 				loader.forceChunks();
 			}
+			else
+			{
+				ForgeChunkManager.releaseTicket(ticket);
+			}
 		}
 	}
 

@@ -34,6 +34,10 @@ public class BlockChunkLoader extends Block implements ITileEntityProvider, TOPI
 		setUnlocalizedName("chunkloader");
 		setRegistryName("chunkloader");
 		setCreativeTab(CreativeTabs.MISC);
+
+		setHardness(5.0F);
+		setResistance(20.0F);
+		setHarvestLevel("pickaxe", 2);
 	}
 
 	@SideOnly(Side.CLIENT)

@@ -19,7 +19,7 @@ public class SimpleChunks
 {
 	public static final String MODID = "simplechunks";
 	public static final String MODNAME = "Simple Chunks";
-	public static final String VERSION = "1.12-0.0.0.0";
+	public static final String VERSION = "1.12-0.0.1.0";
 
 	@Mod.Instance
 	public static SimpleChunks instance;

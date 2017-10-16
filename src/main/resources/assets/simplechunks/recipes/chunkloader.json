@@ -1,0 +1,22 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"result": {
+		"item": "simplechunks:chunkloader"
+	},
+	"pattern": [
+		"oeo",
+		"eEe",
+		"oeo"
+	],
+	"key": {
+		"o": {
+			"item": "minecraft:obsidian"
+		},
+		"E": {
+			"item": "minecraft:ender_eye"
+		},
+		"e": {
+			"item": "minecraft:ender_pearl"
+		}
+	}
+}

@@ -1,15 +1,13 @@
 package net.darkmorford.simplechunks.tileentity;
 
+import net.darkmorford.simplechunks.SimpleChunks;
+import net.darkmorford.simplechunks.inventory.SingleSlotHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.darkmorford.simplechunks.SimpleChunks;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraftforge.common.ForgeChunkManager;
+import net.minecraftforge.items.IItemHandler;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -19,7 +17,7 @@ public class TileEntityChunkLoader extends TileEntity
 	public static final int INV_SLOTS = 1;
 
 	private ForgeChunkManager.Ticket chunkTicket;
-	private ItemStackHandler stackHandler = new ItemStackHandler(INV_SLOTS)
+	private SingleSlotHandler stackHandler = new SingleSlotHandler()
 	{
 		@Override
 		protected void onContentsChanged(int slot)
@@ -27,6 +25,11 @@ public class TileEntityChunkLoader extends TileEntity
 			TileEntityChunkLoader.this.markDirty();
 		}
 	};
+
+	public IItemHandler getStackHandler()
+	{
+		return stackHandler;
+	}
 
 	public void setChunkTicket(ForgeChunkManager.Ticket ticket)
 	{
@@ -98,28 +101,6 @@ public class TileEntityChunkLoader extends TileEntity
 		super.writeToNBT(compound);
 		compound.setTag("inventory", stackHandler.serializeNBT());
 		return compound;
-	}
-
-	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing)
-	{
-		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-		{
-			return true;
-		}
-
-		return super.hasCapability(capability, facing);
-	}
-
-	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing)
-	{
-		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-		{
-			return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(stackHandler);
-		}
-
-		return super.getCapability(capability, facing);
 	}
 
 	public boolean canInteractWith(EntityPlayer playerIn)

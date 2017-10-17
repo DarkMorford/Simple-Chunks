@@ -7,7 +7,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class GuiContainerChunkLoader extends GuiContainer
 {
-	private static final ResourceLocation backgroundTexture = new ResourceLocation("textures/gui/containerChunkLoader.png");
+	private static final ResourceLocation backgroundTexture = new ResourceLocation("textures/gui/containerchunkloader.png");
 
 	public GuiContainerChunkLoader(TileEntityChunkLoader tileEntity, ContainerChunkLoader container)
 	{

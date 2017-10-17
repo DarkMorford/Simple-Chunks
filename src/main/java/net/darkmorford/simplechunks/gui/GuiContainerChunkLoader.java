@@ -1,5 +1,6 @@
 package net.darkmorford.simplechunks.gui;
 
+import net.darkmorford.simplechunks.SimpleChunks;
 import net.darkmorford.simplechunks.inventory.ContainerChunkLoader;
 import net.darkmorford.simplechunks.tileentity.TileEntityChunkLoader;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -7,7 +8,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class GuiContainerChunkLoader extends GuiContainer
 {
-	private static final ResourceLocation backgroundTexture = new ResourceLocation("textures/gui/containerchunkloader.png");
+	private static final ResourceLocation backgroundTexture = new ResourceLocation(SimpleChunks.MODID, "textures/gui/containerchunkloader.png");
 
 	public GuiContainerChunkLoader(TileEntityChunkLoader tileEntity, ContainerChunkLoader container)
 	{

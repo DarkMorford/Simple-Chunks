@@ -28,8 +28,8 @@ public class ContainerChunkLoader extends Container
 		int colWidth = 18;
 		int rowHeight = 18;
 
-		int xOffset = 9;
-		int yOffset = 70;
+		int xOffset = 8;
+		int yOffset = 88;
 
 		// Main inventory
 		int inventoryOffset = 9;
@@ -57,8 +57,8 @@ public class ContainerChunkLoader extends Container
 	{
 		IItemHandler handler = te.getStackHandler();
 
-		int xPos = 9;
-		int yPos = 6;
+		int xPos = 51;
+		int yPos = 15;
 
 		int colWidth = 18;
 

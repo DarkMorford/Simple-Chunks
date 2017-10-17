@@ -14,8 +14,8 @@ public class GuiContainerChunkLoader extends GuiContainer
 	{
 		super(container);
 
-		xSize = 180;
-		ySize = 152;
+		xSize = 176;
+		ySize = 170;
 	}
 
 	@Override
@@ -23,5 +23,7 @@ public class GuiContainerChunkLoader extends GuiContainer
 	{
 		mc.getTextureManager().bindTexture(backgroundTexture);
 		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+
+		this.fontRenderer.drawString("--:--:--:--", 85, 23, 0x000000);
 	}
 }

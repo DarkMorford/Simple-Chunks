@@ -2,6 +2,7 @@ package net.darkmorford.simplechunks.inventory;
 
 import net.darkmorford.simplechunks.tileentity.TileEntityChunkLoader;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
@@ -54,7 +55,7 @@ public class ContainerChunkLoader extends Container
 
 	private void addTileEntitySlots()
 	{
-		IItemHandler handler = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+		IItemHandler handler = te.getStackHandler();
 
 		int xPos = 9;
 		int yPos = 6;
@@ -77,13 +78,12 @@ public class ContainerChunkLoader extends Container
 		if (slot != null && slot.getHasStack())
 		{
 			ItemStack slotStack = slot.getStack();
-			stack = slotStack.copy();
 
 			if (index < TileEntityChunkLoader.INV_SLOTS)
 			{
 				if (!this.mergeItemStack(slotStack, TileEntityChunkLoader.INV_SLOTS, inventorySlots.size(), true))
 				{
-					return ItemStack.EMPTY;
+					return new ItemStack(Items.ENDER_PEARL, 0);
 				}
 			}
 			else if (!this.mergeItemStack(slotStack, 0, TileEntityChunkLoader.INV_SLOTS, false))

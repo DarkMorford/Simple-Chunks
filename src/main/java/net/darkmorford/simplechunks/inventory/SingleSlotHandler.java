@@ -77,12 +77,6 @@ public class SingleSlotHandler implements IItemHandlerModifiable, INBTSerializab
 			return stack;
 		}
 
-		// Return the given stack if not acceptable item
-		if (!internalStack.isEmpty() && !ItemHandlerHelper.canItemStacksStack(stack, internalStack))
-		{
-			return stack;
-		}
-
 		// How many more items can we accept?
 		int spaceAvailable = MAX_STACK_SIZE - internalStack.getCount();
 
@@ -143,7 +137,7 @@ public class SingleSlotHandler implements IItemHandlerModifiable, INBTSerializab
 			if (!simulate)
 			{
 				// Empty out the internal stack
-				internalStack = ItemHandlerHelper.copyStackWithSize(internalStack, 0);
+				internalStack = ItemStack.EMPTY;
 				onContentsChanged(slot);
 			}
 
@@ -155,7 +149,7 @@ public class SingleSlotHandler implements IItemHandlerModifiable, INBTSerializab
 			if (!simulate)
 			{
 				// Reduce the number of items we're holding
-				internalStack = ItemHandlerHelper.copyStackWithSize(internalStack, internalStack.getCount() - itemsRequested);
+				internalStack.shrink(itemsRequested);
 				onContentsChanged(slot);
 			}
 

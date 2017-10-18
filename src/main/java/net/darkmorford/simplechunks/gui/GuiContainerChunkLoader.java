@@ -19,11 +19,24 @@ public class GuiContainerChunkLoader extends GuiContainer
 	}
 
 	@Override
+	public void drawScreen(int mouseX, int mouseY, float partialTicks)
+	{
+		drawDefaultBackground();
+		super.drawScreen(mouseX, mouseY, partialTicks);
+		renderHoveredToolTip(mouseX, mouseY);
+	}
+
+	@Override
+	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
+	{
+		this.fontRenderer.drawString("Time Left:", 84, 12, 0x404040);
+		this.fontRenderer.drawString("--:--:--", 87, 23, 0x000000);
+	}
+
+	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
 	{
 		mc.getTextureManager().bindTexture(backgroundTexture);
 		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
-
-		this.fontRenderer.drawString("--:--:--:--", 85, 23, 0x000000);
 	}
 }

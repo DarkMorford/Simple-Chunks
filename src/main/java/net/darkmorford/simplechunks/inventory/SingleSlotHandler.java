@@ -4,12 +4,13 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.INBTSerializable;
-import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemHandlerHelper;
 
-public class SingleSlotHandler implements IItemHandler, INBTSerializable<NBTTagCompound>
+public class SingleSlotHandler implements IItemHandlerModifiable, INBTSerializable<NBTTagCompound>
 {
-	private ItemStack internalStack = new ItemStack(Items.ENDER_PEARL, 0);
+	private ItemStack internalStack = ItemStack.EMPTY;
+	private static final int MAX_STACK_SIZE = 16;
 
 	@Override
 	public NBTTagCompound serializeNBT()
@@ -40,6 +41,20 @@ public class SingleSlotHandler implements IItemHandler, INBTSerializable<NBTTagC
 	}
 
 	@Override
+	public void setStackInSlot(int slot, ItemStack stack)
+	{
+		validateSlotNumber(slot);
+		if (ItemStack.areItemStacksEqual(internalStack, stack))
+		{
+			return;
+		}
+
+		internalStack = stack;
+
+		onContentsChanged(slot);
+	}
+
+	@Override
 	public ItemStack insertItem(int slot, ItemStack stack, boolean simulate)
 	{
 		// Return empty stack if given one
@@ -48,22 +63,28 @@ public class SingleSlotHandler implements IItemHandler, INBTSerializable<NBTTagC
 			return ItemStack.EMPTY;
 		}
 
+		// Only accept Ender Pearls
+		if (stack.getItem() != Items.ENDER_PEARL)
+		{
+			return stack;
+		}
+
 		validateSlotNumber(slot);
 
 		// Return the given stack if inventory is full
-		if (internalStack.getCount() >= internalStack.getMaxStackSize())
+		if (internalStack.getCount() >= MAX_STACK_SIZE)
 		{
 			return stack;
 		}
 
 		// Return the given stack if not acceptable item
-		if (!ItemHandlerHelper.canItemStacksStack(stack, internalStack))
+		if (!internalStack.isEmpty() && !ItemHandlerHelper.canItemStacksStack(stack, internalStack))
 		{
 			return stack;
 		}
 
 		// How many more items can we accept?
-		int spaceAvailable = internalStack.getMaxStackSize() - internalStack.getCount();
+		int spaceAvailable = MAX_STACK_SIZE - internalStack.getCount();
 
 		// Would inserting the whole stack overfill the inventory?
 		boolean overfill = stack.getCount() > spaceAvailable;
@@ -71,7 +92,14 @@ public class SingleSlotHandler implements IItemHandler, INBTSerializable<NBTTagC
 		if (!simulate)
 		{
 			// Not simulated, actually transfer the items
-			internalStack.grow(overfill ? spaceAvailable : stack.getCount());
+			if (internalStack.isEmpty())
+			{
+				internalStack = overfill ? ItemHandlerHelper.copyStackWithSize(stack, spaceAvailable) : stack;
+			}
+			else
+			{
+				internalStack.grow(overfill ? spaceAvailable : stack.getCount());
+			}
 			onContentsChanged(slot);
 		}
 
@@ -105,7 +133,7 @@ public class SingleSlotHandler implements IItemHandler, INBTSerializable<NBTTagC
 		}
 
 		// How many items can we give up?
-		int itemsRequested = Math.min(amount, internalStack.getMaxStackSize());
+		int itemsRequested = Math.min(amount, MAX_STACK_SIZE);
 
 		// Do we have that many?
 		if (internalStack.getCount() <= itemsRequested)
@@ -138,7 +166,7 @@ public class SingleSlotHandler implements IItemHandler, INBTSerializable<NBTTagC
 	@Override
 	public int getSlotLimit(int slot)
 	{
-		return internalStack.getMaxStackSize();
+		return MAX_STACK_SIZE;
 	}
 
 	protected void validateSlotNumber(int slot)

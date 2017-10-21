@@ -18,6 +18,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
@@ -104,6 +106,24 @@ public class BlockChunkLoader extends Block implements ITileEntityProvider, TOPI
 		}
 
 		super.breakBlock(worldIn, pos, state);
+	}
+
+	@Override
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+	{
+		if (worldIn.isRemote)
+		{
+			return true;
+		}
+
+		TileEntity te = worldIn.getTileEntity(pos);
+		if (!(te instanceof TileEntityChunkLoader))
+		{
+			return false;
+		}
+
+		playerIn.openGui(SimpleChunks.instance, 1, worldIn, pos.getX(), pos.getY(), pos.getZ());
+		return true;
 	}
 
 	@Override

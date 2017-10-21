@@ -1,16 +1,35 @@
 package net.darkmorford.simplechunks.tileentity;
 
 import net.darkmorford.simplechunks.SimpleChunks;
+import net.darkmorford.simplechunks.inventory.SingleSlotHandler;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraftforge.common.ForgeChunkManager;
+import net.minecraftforge.items.IItemHandler;
 
 import java.util.HashSet;
 import java.util.Set;
 
 public class TileEntityChunkLoader extends TileEntity
 {
+	public static final int INV_SLOTS = 1;
+
 	private ForgeChunkManager.Ticket chunkTicket;
+	private SingleSlotHandler stackHandler = new SingleSlotHandler()
+	{
+		@Override
+		protected void onContentsChanged(int slot)
+		{
+			TileEntityChunkLoader.this.markDirty();
+		}
+	};
+
+	public IItemHandler getStackHandler()
+	{
+		return stackHandler;
+	}
 
 	public void setChunkTicket(ForgeChunkManager.Ticket ticket)
 	{
@@ -64,5 +83,28 @@ public class TileEntityChunkLoader extends TileEntity
 		}
 
 		return chunks;
+	}
+
+	@Override
+	public void readFromNBT(NBTTagCompound compound)
+	{
+		super.readFromNBT(compound);
+		if (compound.hasKey("inventory"))
+		{
+			stackHandler.deserializeNBT((NBTTagCompound)compound.getTag("inventory"));
+		}
+	}
+
+	@Override
+	public NBTTagCompound writeToNBT(NBTTagCompound compound)
+	{
+		super.writeToNBT(compound);
+		compound.setTag("inventory", stackHandler.serializeNBT());
+		return compound;
+	}
+
+	public boolean canInteractWith(EntityPlayer playerIn)
+	{
+		return !isInvalid() && playerIn.getDistanceSq(pos.add(0.5, 0.5, 0.5)) <= 64;
 	}
 }
